@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Page</title>
+  <style>
+    .image-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr); /* Three columns */
+            gap: 10px; /* Adjust the gap between images */
+        }
+
+    /* Style for each image */
+    .image-grid img {
+        width: 100%; /* Make sure the image takes the full width of its container */
+        height: auto; /* Maintain the aspect ratio */
+        max-width: 100%; /* Ensure images don't exceed their natural size */
+        border: 1px solid #ddd; /* Optional: Add a border for better visibility */
+        border-radius: 5px; /* Optional: Add rounded corners */
+    }
+
+    
+    div.main {
+        margin-top: 150px; /* You can adjust the margin value as needed */
+
+    }
+
+    body {
+      background-color: #FFF6E9;
+      color: #0D9276;
+      font-family: Arial, sans-serif;
+      text-align: center;
+      /* margin: 20px; */
+    }
+
+    /* Navigation Bar Styles */
+    nav {
+      background-color: #0D9276;
+      text-align: right;
+      padding: 10px;
+    }
+
+    nav a {
+      color: #FFF6E9;
+      text-decoration: none;
+      padding: 10px;
+      margin: 5px;
+    }
+
+    nav a:hover {
+      background-color: #FFF6E9;
+      color: #0D9276;
+      border-radius: 10px;
+    }
+
+    input {
+      margin: 10px;
+      padding: 10px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+
+    }
+    
+    button {
+      margin: 10px;
+      padding: 15px 30px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+
+    }
+
+    #imageSearch, #textSearch {
+      width: 300px;
+    }
+
+    button {
+      background-color: #0D9276;
+      color: #FFF6E9;
+      cursor: pointer;
+    }
+    
+  </style>
+</head>
+
+
+<body>
+
+    <nav>
+      <a href="../">Home</a>
+      <a href="/search">Search</a>
+      <a href="#">Contact</a>
+    </nav>
+
+    <div class="main">
+        <h1>Search Page</h1>
+        <form action="" method="post" enctype="multipart/form-data">
+          {% csrf_token %} 
+          <label for="imageSearch">Query Image File:</label>
+          <input type="file" id="imageSearch" name="imageSearch" accept="image/*"><br>
+          
+          <label for="textSearch">Query Text:</label>
+          <input type="text" id="textSearch" name="textSearch"><br>
+          
+          <button type="submit">Search</button>
+        </form>
+       
+    </div>
+    <div>
+      <div class="evaluation-metrix">
+        <h3>Prediction results with top 10</h3>
+        <ul>
+            <li>Precision: {{ precision }}</li>
+            <li>Recall: {{ recall }}</li>
+            <li>F1 - score: {{ f1_score }}</li>
+        </ul>
+    </div>
+    <div>
+      <div class="image-grid">
+      {% for item in animalresults %}
+        <img src="../static/resource/flickr30k_images/{{item}}">
+      {% endfor %}
+    </div>
+
+
+</body>
+</html>
