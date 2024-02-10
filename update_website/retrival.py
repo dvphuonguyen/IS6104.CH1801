@@ -59,13 +59,7 @@ def parse_embedding_array(str_embedding):
     array = np.array(str_embedding.split(" "))
     array = np.delete(array, np.where(array == "")).reshape(1,512)
     return array
-  
- def clean_text(_text):
-    _text  = _text.replace('\n', '')
-    _text = _text.replace('[[','')
-    _text = _text.replace(']]','')
-    return _text.lower()
-   
+    
 def recall(actual, predicted, k):
     act_set = set(actual)
     pred_set = set(predicted[:k])
@@ -81,7 +75,13 @@ def f1_score(precision, recall):
         return round(2 * precision * recall / (precision + recall), 2)
     except:
         None
-        
+
+def clean_text(_text):
+    _text  = _text.replace('\n', '')
+    _text = _text.replace('[[','')
+    _text = _text.replace(']]','')
+    return _text.lower()
+         
 def get_top_N_images(query, top_K=10, search_criterion="text"):
 
     data = pd.DataFrame(
@@ -117,12 +117,12 @@ def get_top_N_images(query, top_K=10, search_criterion="text"):
     most_similar_articles = data.sort_values(by='cos_sim', ascending=False).drop_duplicates(subset='image_name')[1:top_K+1]
     
     # Evaluation
-    label_data_df = pd.read_csv('./label.csv').fillna(method='ffill')
-    label_data_df['text_comment'] = label_data_df['text_comment'].apply(lambda x: clean_text(x))
-    label_data_df = label_data_df[label_data_df['text_comment'] == clean_text(query)]
-  
-    recall = recall(most_similar_articles.image_name.values, label_data_df.image_name.values, top_K)
-    precision = precision(most_similar_articles.image_name.values, label_data_df.image_name.values, top_K)
-    f1_score = f1_score(precision, recall)
+    # label_data_df = pd.read_csv('./label.csv').fillna(method='ffill')
+    # label_data_df['text_comment'] = label_data_df['text_comment'].apply(lambda x: clean_text(x))
+    # label_data_df = label_data_df[label_data_df['text_comment'] == clean_text(query)]
     
-    return most_similar_articles[revevant_cols].reset_index(), (precision, recall, f1_score)
+    # recall = recall(most_similar_articles.image_name.values, label_data_df.image_name.values, top_K)
+    # precision = precision(most_similar_articles.image_name.values, label_data_df.image_name.values, top_K)
+    # f1_score = f1_score(precision, recall)
+    
+    return most_similar_articles[revevant_cols].reset_index(), (1, 2, 3)#, (precision, recall, f1_score)
