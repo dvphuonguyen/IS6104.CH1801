@@ -112,6 +112,7 @@ def get_top_N_images(query, top_K=10, search_criterion="text"):
     
     # Evaluation
     label_data_df = pd.read_csv('./label.csv').fillna(method='ffill')
+    label_data_df = label_data_df[label_data_df['text_comment'] == query]
     recall = recall(most_similar_articles.image_name.values, label_data_df.image_name.values, top_K)
     precision = precision(most_similar_articles.image_name.values, label_data_df.image_name.values, top_K)
     f1_score = f1_score(precision, recall)
