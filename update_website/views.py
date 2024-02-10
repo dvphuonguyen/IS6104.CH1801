@@ -9,6 +9,9 @@ import os
 def index(request):    
 
     template = loader.get_template('searchview.html')
+    precision = None
+    recall = None
+    f1_score = None
     rs_list = []
     
     if (request.method == "POST"):
@@ -21,6 +24,9 @@ def index(request):
             query_text = request.POST['textSearch']
             rs = get_top_N_images(query_text, top_K=10, search_criterion="text")
             rs_list = rs[0].image_name.values
+            precision = rs[1][0]
+            recall = rs[1][1]
+            f1_score = rs[1][2]
 
         if(Is_query_img and not(Is_query_text)):
             query_img = request.FILES['imageSearch']
@@ -33,9 +39,10 @@ def index(request):
 
             rs = get_top_N_images(query_image, top_K=10, search_criterion="img")
             rs_list = rs[0].image_name.values
-        precision = rs[1][0]
-        recall = rs[1][1]
-        f1_score = rs[1][2]
+            precision = rs[1][0]
+            recall = rs[1][1]
+            f1_score = rs[1][2]
+            
     context = {
         'animalresults': rs_list,
         'precision': precision,
