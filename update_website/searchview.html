@@ -81,7 +81,33 @@
       color: #FFF6E9;
       cursor: pointer;
     }
-    
+  
+    /* Uyen updated */
+  .table-wrapper {
+      text-align: center; /* Căn giữa nội dung */
+  }
+
+  .table-wrapper h4 {
+      margin-bottom: 10px; /* Khoảng cách giữa h4 và table */
+  }
+
+  .styled-table {
+      margin: auto; /* Đặt margin tự động để căn giữa */
+      width: 50%; /* Chiều rộng của bảng */
+      border-collapse: collapse;
+      border: 1px solid #ddd;
+  }
+
+  .styled-table th, .styled-table td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+  }
+
+  .styled-table th {
+      background-color: #f2f2f2;
+      color: #333;
+  }
   </style>
 </head>
 
@@ -109,19 +135,34 @@
        
     </div>
     <div>
-      <div class="evaluation-metrix">
-        <h3>Prediction results with top 10</h3>
-        <ul>
-            <li>Precision: {{ precision }}</li>
-            <li>Recall: {{ recall }}</li>
-            <li>F1 - score: {{ f1_score }}</li>
-        </ul>
-    </div>
-    <div>
-      <div class="image-grid">
-      {% for item in animalresults %}
-        <img src="../static/resource/flickr30k_images/{{item}}">
-      {% endfor %}
+      <div class="evaluation-metrics">
+        {% if precision is not None or  recall is not None or f1_score is not None %}
+        <div class="table-wrapper">
+          <h3>Prediction results with top 10</h3>
+          <h5>Order-unaware metrics</h5>
+          <table border="1" class="styled-table">
+            <tr>
+                <td>Precision</td>
+                <td>Recall</td>
+                <td>F1 - score</td>
+            </tr>
+            <tr>
+                <td>{{ precision }}</td>
+                <td>{{ recall }}</td>
+                <td>{{ f1_score }}</td>
+            </tr>
+          </table>
+        </div>
+        {% endif %}
+      </div>
+      <div class="main">
+        <h1 >Image results</h1>
+        <div class="image-grid">
+          {% for item in animalresults %}
+            <img src="../static/resource/flickr30k_images/{{item}}">
+          {% endfor %}
+        </div>
+      </div>
     </div>
 
 
