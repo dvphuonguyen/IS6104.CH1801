@@ -59,7 +59,13 @@ def parse_embedding_array(str_embedding):
     array = np.array(str_embedding.split(" "))
     array = np.delete(array, np.where(array == "")).reshape(1,512)
     return array
-    
+  
+ def clean_text(_text):
+    _text  = _text.replace('\n', '')
+    _text = _text.replace('[[','')
+    _text = _text.replace(']]','')
+    return _text.lower()
+   
 def recall(actual, predicted, k):
     act_set = set(actual)
     pred_set = set(predicted[:k])
@@ -112,7 +118,9 @@ def get_top_N_images(query, top_K=10, search_criterion="text"):
     
     # Evaluation
     label_data_df = pd.read_csv('./label.csv').fillna(method='ffill')
-    label_data_df = label_data_df[label_data_df['text_comment'] == query]
+    label_data_df['text_comment'] = label_data_df['text_comment'].apply(lambda x: clean_text(x))
+    label_data_df = label_data_df[label_data_df['text_comment'] == clean_text(query)]
+  
     recall = recall(most_similar_articles.image_name.values, label_data_df.image_name.values, top_K)
     precision = precision(most_similar_articles.image_name.values, label_data_df.image_name.values, top_K)
     f1_score = f1_score(precision, recall)
